@@ -6,9 +6,9 @@ class Navbar extends Component {
         return (
             <div className="App">
             {/* User NavLink instead with custom CSS if time */}
-                <nav class="nav">
-                    <a class="nav-link " href="/">Add User</a>
-                    <a class="nav-link" href="/user">User Info</a>
+                <nav className="nav">
+                    <a className="nav-link " href="/">Add User</a>
+                    <a className="nav-link" href="/user">Display Users</a>
                 </nav>
             </div>
         );
