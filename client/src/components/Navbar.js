@@ -8,7 +8,7 @@ class Navbar extends Component {
             {/* User NavLink instead with custom CSS if time */}
                 <nav className="nav">
                     <a className="nav-link " href="/">Add User</a>
-                    <a className="nav-link" href="/user">Display Users</a>
+                    <a className="nav-link" href="/allUsers">Display Users</a>
                 </nav>
             </div>
         );

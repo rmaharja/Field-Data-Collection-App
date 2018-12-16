@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import JumboTron from "../components/Jumbotron";
 import {Col, Row, Container} from "../components/Grid";
+import API from "../utils/API";
 
 class Home extends Component {
     state = {
@@ -8,19 +9,14 @@ class Home extends Component {
         userName: null,
         fullName: null,
         phoneNumber: null,
-        device: {}
+        device: null
     }
-    componentWillMount() {
-        this.setState({
-            device: {
-                deviceType: "Android",
-                deviceModel: "LG V20",
-                name: "Rohit's LG V20"
-            }
-        })
-        console.log("this.state.device", this.state.device)
 
+    componentDidMount() {
+        // Loading users from API
+        this.loadUsers()
     }
+
     handleOnChange = (e) => {
 
         //pulling id and value from e.target
@@ -37,25 +33,44 @@ class Home extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let deviceOBject = {
-            deviceType: "Android",
-            deviceModel: "LG V20",
-            name: "Rohit's LG V20"
-        }
 
         if (this.state.userName && this.state.fullName && this.state.phoneNumber) {
             console.log("All Form Data entered!");
             if (this.state.device) {
                 console.log("All Device Information Captured");
                 console.log("Current State: ", this.state);
+                //save to DB
+                this.saveUser();
+                
             } else {
-                console.log("Failed to capture all Device Info!");
+                console.log("Failed to capture all Device Info Not Saved to the DB! ");
             }
         } else {
             alert("Please fill out all your info!");
         }
 
     } //end of handleSubmit
+
+    saveUser = () => {
+        API.saveUser ({
+            userName: this.state.userName,
+            fullName: this.state.fullName,
+            phoneNumber: this.state.phoneNumber,
+            device: this.state.device
+        })
+        .then (res => this.loadUsers())
+        .catch(err => console.log(err));
+    }
+    loadUsers = () => {
+    API.getUsers()
+    .then(res => this.setState({
+        users: res.data,
+        userName: null,
+        fullName: null,
+        phoneNumber: null,
+        device: navigator.platform
+     }))
+    }
 
     render() {
         return (
@@ -96,6 +111,7 @@ class Home extends Component {
                         <br/>
                         <button>Submit</button>
                     </form>
+                    <button onClick={this.loadUsers}> Display users</button>
                 </Container>
             </div>
         );
